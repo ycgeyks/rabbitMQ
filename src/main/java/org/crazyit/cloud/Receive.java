@@ -18,8 +18,8 @@ public class Receive {
 		Channel channel = conn.createChannel();
 		
 		String queueName = "hello";
-		channel.queueDeclare(queueName, false, false, false, null);
-		
+
+		//将consumer和channel绑定 ?
 		Consumer consumer = new DefaultConsumer(channel) {
 
 			@Override
@@ -29,7 +29,12 @@ public class Receive {
 				System.out.println("接收到的消息：" + msg);
 			}
 		};
-		
+
+		//消费指定queueName里的消息,是通过上面自定义的DefaultConsumer.handleDelivery方法消费
 		channel.basicConsume(queueName, consumer);
+
+		//如果不close的话,会一直定期去queue里取message
+//		channel.close();
+//		conn.close();
 	}
 }
